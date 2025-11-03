@@ -1,5 +1,3 @@
 *.json
-!.gitignore
-!.gitattributes
 
 node_modules
