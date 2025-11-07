@@ -4,9 +4,9 @@ const urlRoute = require('./routes/url')
 const {connectToMongoDB} = require('./connect')
 const URL = require('./models/url')
 const staticRoute = require('./routes/staticRouter');
+const userRoute = require('./routes/user');
 
 const app = express();
-
 const PORT = 8001;
 
 connectToMongoDB('mongodb://localhost:27017/short-url').then(()=>console.log('Connected to Mongo'))
@@ -19,6 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false})); //to support form data.
 
 app.use('/url', urlRoute);
+app.use('/user', userRoute);
 app.use('/', staticRoute);
 
 app.get('/url/:shortId', async (req, res)=>{
@@ -30,6 +31,10 @@ app.get('/url/:shortId', async (req, res)=>{
     }}
 )
 res.redirect(entry.redirectedURL);
- }) ;
+});
+
+// app.get('/user/:email', async (req, res)=>)
+
+app.get('/')
 
 app.listen(PORT, ()=>{console.log(`listening at PORT: ${PORT}, use http://localhost:${PORT}`)})
