@@ -18,9 +18,9 @@ async function handleLogin(req, res) {
     if (!user || user.password != password){
         return res.render("login", {error: 'Wrong email/password'})
     }
-    const sessionId = uuidv4();
-    setUser(sessionId, user);
-    res.cookie("uid", sessionId);
+    const token = setUser(user);
+    // mark cookie httpOnly for slightly better security
+    res.cookie("uid", token, { httpOnly: true });
     return res.redirect('/')
 }
 
