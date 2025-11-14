@@ -8,20 +8,22 @@ async function handleUserSignup(req, res){
         name,
         email,
         password
-    })
+    }) 
     return res.redirect("/");
 }
 
 async function handleLogin(req, res) {
     const {email, password} = req.body;
-    user = await User.findOne({email})
-    if (!user || user.password != password){
+    const user = await User.findOne({email})
+    console.log('user', user, password)
+    if (!user || user.password !== password){
         return res.render("login", {error: 'Wrong email/password'})
     }
+    console.log('Looking for user')
     const token = setUser(user);
     // mark cookie httpOnly for slightly better security
-    res.cookie("uid", token, { httpOnly: true });
-    return res.redirect('/')
+    res.cookie("token", token, { httpOnly: true });
+    return res.redirect('/');
 }
 
 module.exports = {
